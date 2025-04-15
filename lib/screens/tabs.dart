@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Model/meal.dart';
 import '../widgets/main_drawer.dart';
 import 'category.dart';
+import 'filter.dart';
 import 'meals.dart';
 
 class TabScreen extends StatefulWidget{
@@ -42,6 +43,12 @@ class _TabScreenState extends State<TabScreen>{
       selectPageIndex=index;
     });
   }
+  void setScreen(String identifier){
+if(identifier=='filters'){
+  Navigator.of(context).pop();
+Navigator.of(context).pushReplacement(MaterialPageRoute(builder:(ctx)=>FilterScreen()));
+}
+  }
   @override
   Widget build(BuildContext context) {
     Widget activePage=Categories(onToggleFavoriteMeal:toggelMealFavoriteStatus);
@@ -62,7 +69,7 @@ class _TabScreenState extends State<TabScreen>{
          onTap:selectPage,
        currentIndex:selectPageIndex,
      ),
-     drawer:MainDrawer()
+     drawer:MainDrawer(onSelectScreen: setScreen)
  );
   }
   
