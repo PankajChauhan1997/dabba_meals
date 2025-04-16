@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../Model/meal.dart';
 // import '../data/data.dart';
 import '../provider/favorite_provider.dart';
+import '../provider/filters_provider.dart';
 import '../provider/meal_provider.dart';
 import '../widgets/main_drawer.dart';
 import 'category.dart';
@@ -29,7 +30,7 @@ class TabScreen extends ConsumerStatefulWidget{
 class _TabScreenState extends ConsumerState<TabScreen>{
   int selectPageIndex=0;
   // final List<Meal>favoriteMeal=[];
-  Map<Filter,bool>_selectedFilters=kInitialFilters;
+  // Map<Filter,bool>_selectedFilters=kInitialFilters;
   // void toggelMealFavoriteStatus(Meal meal){
   //   final isExisting=favoriteMeal.contains(meal);
   //   if(isExisting){
@@ -61,29 +62,45 @@ class _TabScreenState extends ConsumerState<TabScreen>{
     Navigator.of(context).pop();
 
 if(identifier=='filters'){
-final result=await Navigator.of(context).push<Map<Filter,bool>>(
-    MaterialPageRoute(builder:(ctx)=>FilterScreen(currentFilters: _selectedFilters,)));
-setState((){
-  _selectedFilters=result??kInitialFilters;
-});
+// final result=
+await Navigator.of(context).push<Map<Filter,bool>>(
+    MaterialPageRoute(builder:(ctx)=>FilterScreen(
+      // currentFilters: _selectedFilters,
+    )));
+// setState((){
+//   _selectedFilters=result??kInitialFilters;
+// });
 }
   }
   @override
   Widget build(BuildContext context) {
     final meals=ref.watch(mealsProvider);
     final availableMeal=meals.where((meal){
-if(_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree){
+      final activeFilters=ref.read(filtersProvider);
+if(activeFilters[Filter.glutenFree]! && !meal.isGlutenFree){
   return false;
 }
-if(_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
+if(activeFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
   return false;
 }
-if(_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian){
+if(activeFilters[Filter.vegetarian]! && !meal.isVegetarian){
   return false;
 }
-if(_selectedFilters[Filter.vegan]! && !meal.isVegan){
+if(activeFilters[Filter.vegan]! && !meal.isVegan){
   return false;
 }
+// if(_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree){
+//   return false;
+// }
+// if(_selectedFilters[Filter.lactoseFree]! && !meal.isLactoseFree){
+//   return false;
+// }
+// if(_selectedFilters[Filter.vegetarian]! && !meal.isVegetarian){
+//   return false;
+// }
+// if(_selectedFilters[Filter.vegan]! && !meal.isVegan){
+//   return false;
+// }
 return true;
     }).toList();
     Widget activePage=Categories(
