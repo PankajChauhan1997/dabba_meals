@@ -1,11 +1,12 @@
 import 'package:dabba_meals/screens/meals.dart';
 import 'package:dabba_meals/screens/tabs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data/data.dart';
 import 'screens/category.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child:MyApp()));
 }
 
 class MyApp extends StatelessWidget {

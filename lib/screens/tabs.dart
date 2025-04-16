@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../Model/meal.dart';
-import '../data/data.dart';
+// import '../data/data.dart';
+import '../provider/favorite_provider.dart';
+import '../provider/meal_provider.dart';
 import '../widgets/main_drawer.dart';
 import 'category.dart';
 import 'filter.dart';
@@ -14,41 +17,41 @@ Filter.lactoseFree:false,
 Filter.vegetarian:false,
 Filter.vegan:false
 };
-class TabScreen extends StatefulWidget{
+class TabScreen extends ConsumerStatefulWidget{
   TabScreen({super.key});
 
   @override
-  State<StatefulWidget>createState() {
+  ConsumerState<TabScreen>createState() {
     return _TabScreenState();
   }
   }
 
-class _TabScreenState extends State<TabScreen>{
+class _TabScreenState extends ConsumerState<TabScreen>{
   int selectPageIndex=0;
-  final List<Meal>favoriteMeal=[];
+  // final List<Meal>favoriteMeal=[];
   Map<Filter,bool>_selectedFilters=kInitialFilters;
-  void toggelMealFavoriteStatus(Meal meal){
-    final isExisting=favoriteMeal.contains(meal);
-    if(isExisting){
-      setState((){
-        favoriteMeal.remove(meal);
-        showInfoMessage('Removed from favorites');
-      });
-    }else{
-      setState((){
-        favoriteMeal.add(meal);
-        showInfoMessage('Marked as a favorites');
-
-      });
-
-    }
-  }
-  void showInfoMessage(String Message){
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-      backgroundColor:Colors.green,content: Text(Message),));
-  }
+  // void toggelMealFavoriteStatus(Meal meal){
+  //   final isExisting=favoriteMeal.contains(meal);
+  //   if(isExisting){
+  //     setState((){
+  //       favoriteMeal.remove(meal);
+  //       showInfoMessage('Removed from favorites');
+  //     });
+  //   }else{
+  //     setState((){
+  //       favoriteMeal.add(meal);
+  //       showInfoMessage('Marked as a favorites');
+  //
+  //     });
+  //
+  //   }
+  // }
+  // void showInfoMessage(String Message){
+  //   ScaffoldMessenger.of(context).clearSnackBars();
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //     backgroundColor:Colors.green,content: Text(Message),));
+  // }
   void selectPage(index){
     setState((){
       selectPageIndex=index;
@@ -67,7 +70,8 @@ setState((){
   }
   @override
   Widget build(BuildContext context) {
-    final availableMeal=dummyMeals.where((meal){
+    final meals=ref.watch(mealsProvider);
+    final availableMeal=meals.where((meal){
 if(_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree){
   return false;
 }
@@ -83,12 +87,17 @@ if(_selectedFilters[Filter.vegan]! && !meal.isVegan){
 return true;
     }).toList();
     Widget activePage=Categories(
-      onToggleFavoriteMeal:toggelMealFavoriteStatus,
+      // onToggleFavoriteMeal:toggelMealFavoriteStatus,
       availableMeal: availableMeal,);
 
     var activePageTitle="Categories";
     if(selectPageIndex==1){
-      activePage=MealsScreen(meal: favoriteMeal, onToggleFavoriteMeal: toggelMealFavoriteStatus);
+      final favoritemeals=ref.watch(favoriteMealsProvide);
+      activePage=MealsScreen(
+          // meal: favoriteMeal,
+          meal: favoritemeals,
+          // onToggleFavoriteMeal: toggelMealFavoriteStatus
+          );
       activePageTitle="Your Favorites";
     }
  return Scaffold(
