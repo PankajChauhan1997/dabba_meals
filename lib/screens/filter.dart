@@ -12,11 +12,11 @@ enum Filter{
   vegetarian,
   vegan,
 }
-class FilterScreen extends ConsumerStatefulWidget{
+class FilterScreen extends ConsumerWidget{
   //  FilterScreen({super.key,required this.currentFilters});
    FilterScreen({super.key,});
   // final Map<Filter,bool>currentFilters;
-
+/*
   @override
   ConsumerState<FilterScreen> createState() {
     return _FilterScreenState();
@@ -29,7 +29,9 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
   var _lactoseFree=false;
   var _vegetarian=false;
   var _vegan=false;
-
+*/
+  @override
+  /*
   @override
   void initState(){
     super.initState();
@@ -43,7 +45,9 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
      _vegetarian=activeFilters[Filter.vegetarian]!;
      _vegan=activeFilters[Filter.vegan]!;
   }
-  Widget build(BuildContext context) {
+  */
+  Widget build(BuildContext context,WidgetRef ref) {
+    final filterData=ref.watch(filtersProvider);
    return Scaffold(appBar:AppBar(title:Text("Your Filters")),
      drawer:MainDrawer(onSelectScreen: (identifier){
        Navigator.of(context).pop();
@@ -53,15 +57,16 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
        }
      }),
 
-       body:WillPopScope(
-         onWillPop: ()async {
-           ref.read(filtersProvider.notifier).setFilters({
-               Filter.glutenFree:_glutenFree,
-               Filter.lactoseFree:_lactoseFree,
-               Filter.vegetarian:_vegetarian,
-               Filter.vegan:_vegan
-             }
-           );
+       body:
+       // WillPopScope(
+       //   onWillPop: ()async {
+       //     ref.read(filtersProvider.notifier).setFilters({
+       //         Filter.glutenFree:_glutenFree,
+       //         Filter.lactoseFree:_lactoseFree,
+       //         Filter.vegetarian:_vegetarian,
+       //         Filter.vegan:_vegan
+       //       }
+       //     );
            // Navigator.of(context).pop({
            //   Filter.glutenFree:_glutenFree,
            //   Filter.lactoseFree:_lactoseFree,
@@ -70,13 +75,15 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
            // });
 
            // return false;
-           return true;
-         },
-         child: Column(children:[
-           SwitchListTile(value: _glutenFree, onChanged: (value) {
-             setState((){
-               _glutenFree=value;
-             });
+         //   return true;
+         // },
+         // child:
+         Column(children:[
+           SwitchListTile(value: filterData[Filter.glutenFree]!, onChanged: (value) {
+             // setState((){
+               // _glutenFree=value;
+               ref.read(filtersProvider.notifier).setFilter(Filter.glutenFree,value);
+             // });
            },
                title:Text('Gluten-free',
                    style:Theme.of(context).textTheme.titleLarge!.copyWith(color:Theme.of(context).colorScheme.onBackground),
@@ -89,10 +96,12 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
              activeColor:Theme.of(context).colorScheme.tertiary,
              contentPadding:EdgeInsets.only(left:34,right:22),
            ),
-           SwitchListTile(value: _lactoseFree, onChanged: (value) {
-             setState((){
-               _lactoseFree=value;
-             });
+           SwitchListTile(value: filterData[Filter.lactoseFree]!, onChanged: (value) {
+             // setState((){
+             //   _lactoseFree=value;
+             ref.read(filtersProvider.notifier).setFilter(Filter.lactoseFree,value);
+
+             // });
            },
                title:Text('Lactose-free',
                    style:Theme.of(context).textTheme.titleLarge!.copyWith(color:Theme.of(context).colorScheme.onBackground),
@@ -105,11 +114,12 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
              activeColor:Theme.of(context).colorScheme.tertiary,
              contentPadding:EdgeInsets.only(left:34,right:22),
            ),
-           SwitchListTile(value: _vegetarian, onChanged: ( value) {
-             setState((){
-               _vegetarian=value;
-             });
-         
+           SwitchListTile(value:filterData[Filter.vegetarian]! , onChanged: ( value) {
+             // setState((){
+             //   _vegetarian=value;
+             // });
+             ref.read(filtersProvider.notifier).setFilter(Filter.vegetarian,value);
+
            },
            title:Text("Vegetarian",
                style:Theme.of(context).textTheme.titleLarge!.copyWith(color:Theme.of(context).colorScheme.onBackground),
@@ -122,10 +132,12 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
              activeColor:Theme.of(context).colorScheme.tertiary,
              contentPadding:EdgeInsets.only(left:34,right:22),
            ),
-           SwitchListTile(value: _vegan, onChanged: ( value) {
-             setState((){
-               _vegan=value;
-             });
+           SwitchListTile(value: filterData[Filter.vegan]!,
+             onChanged: ( value) {
+             // setState((){
+             //   _vegan=value;
+             // });
+               ref.read(filtersProvider.notifier).setFilter(Filter.vegan,value);
          
            },
            title:Text("Vegan",
@@ -141,7 +153,8 @@ class _FilterScreenState extends ConsumerState<FilterScreen>{
            ),
          
          ]),
-       ));
+    //   )
+    );
   }
 
 }
