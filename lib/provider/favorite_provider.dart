@@ -18,6 +18,7 @@ return true;
     }
   }
 }
-final favoriteMealsProvide=StateNotifierProvider<FavoriteMealsNotifier,List<Meal>>((ref){
+final favoriteMealsProvider=StateNotifierProvider<FavoriteMealsNotifier,List<Meal>>((ref){
   return FavoriteMealsNotifier();
 });
+
