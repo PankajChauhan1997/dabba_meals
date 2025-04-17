@@ -41,7 +41,9 @@ class MealDetails extends ConsumerWidget {
 body:SingleChildScrollView(
   child: Column(
     children: [
-      Image.network(width:double.infinity,height:300,fit:BoxFit.cover,meal.imageUrl),
+      ///tag is used to identifies the start and end of the animation so you have to add with the id or a special tag.
+
+      Hero(tag:meal.id,child: Image.network(width:double.infinity,height:300,fit:BoxFit.cover,meal.imageUrl)),
       SizedBox(height:14),
       Text("Ingredients",style:Theme.of(context).textTheme.titleLarge!.copyWith(color:Theme.of(context).colorScheme.onSurface)),
       SizedBox(height:14),

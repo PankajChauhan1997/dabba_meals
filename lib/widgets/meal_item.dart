@@ -28,8 +28,18 @@ class MealItem extends StatelessWidget{
         child:InkWell(
         onTap:(){onSelectMeal(context,meal);},
         child:Stack(children:[
-          FadeInImage(fit:BoxFit.cover,placeholder: MemoryImage(kTransparentImage),height:200,width:double.infinity,
-            image: NetworkImage(meal.imageUrl),
+          ///MultiScreen transition animation 'Hero widget'
+          ///tag is used to identifies the start and end of the animation so you have to add with the id or a special tag.
+
+          Hero(
+            tag: meal.id,
+            child: FadeInImage(
+              fit:BoxFit.cover,
+              placeholder: MemoryImage(kTransparentImage),
+              height:200,
+              width:double.infinity,
+              image: NetworkImage(meal.imageUrl),
+            ),
           ),Positioned(bottom:0,left:0,right:0,child: Container(color:Colors.black54,
             padding:EdgeInsets.symmetric(vertical:6,horizontal:44),
             child:Column(children:[
