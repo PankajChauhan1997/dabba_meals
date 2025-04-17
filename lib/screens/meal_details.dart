@@ -16,15 +16,27 @@ class MealDetails extends ConsumerWidget {
     final isFavorite=favoriteMeals.contains(meal);
     return Scaffold(
         appBar:AppBar(title:Text(meal.title),actions:[
+          ///Implicit animation which provides by the flutter
+          ///Please find out more on animated widgets
+          ///less code as compare to Explicit animation
           IconButton(onPressed: () {
            final wasAdded= ref.read(favoriteMealsProvider.notifier).toggleMealFavoriteStatus(meal);
 
               ScaffoldMessenger.of(context).clearSnackBars();
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor:Colors.green,content: Text(wasAdded?"Meal added as a favorite":"Meal removed"),));
+                    backgroundColor:Colors.green,content: Text(wasAdded?"Meal added as a favorite":"Meal removed",
+                  style:TextStyle(color:Colors.white)
+                  ),));
             },
-            icon: Icon(isFavorite?Icons.star:Icons.star_border))
+            icon: AnimatedSwitcher(duration: Duration(milliseconds:300),
+                transitionBuilder:(child,animation){
+              return RotationTransition(turns: Tween(begin:0.8,end:1.0).animate(animation),
+                  child:child);
+                },
+            child:Icon(isFavorite?Icons.star:Icons.star_border,key:ValueKey(isFavorite))
+                ///key is used for same data type/widgets but their attached data is different
+            ),)
         ]),
 body:SingleChildScrollView(
   child: Column(

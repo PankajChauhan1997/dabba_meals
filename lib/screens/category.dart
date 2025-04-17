@@ -60,7 +60,7 @@ class _CategoriesState extends State<Categories>with SingleTickerProviderStateMi
       ///Explicit Animation using padding
       // builder: ( context, child)=>Padding(padding:EdgeInsets.only(
       //     top:100-_animationController.value*100), child:child),
-        
+
         ///Explicit Animation using SlideTransition
       builder:(context,child)=>
           SlideTransition(
