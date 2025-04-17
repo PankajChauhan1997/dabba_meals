@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../screens/filter.dart';
 import 'meal_provider.dart';
 
